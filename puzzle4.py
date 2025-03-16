@@ -7,6 +7,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.metrics import mean_squared_error
+from xgboost import XGBRegressor
 
 # Load the dataset
 def load_data(filename):
@@ -146,7 +147,7 @@ def train_xgboost_model(data):
     initial_param_grid = create_xgb_param_grid()
     
     # Train the model with dynamic search
-    model = XGBRegressor(random_state=42)
+    model = XGBRegressor(tree_method='gpu_hist', gpu_id=0, random_state=42)
     best_params, best_mse = train_with_dynamic_search(X_train, y_train, X_test, y_test, model, initial_param_grid, n_iter=50)
     
     print(f"Best XGBoost model parameters: {best_params}")
